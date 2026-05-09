@@ -18,22 +18,26 @@ val colunaK: Map<String,Double> = listaPolegadasCurta.zip(listaColunaK).toMap<St
 val colunaN: Map<String,Double> = listaPolegadasCurta.zip(listaColunaN).toMap<String, Double>()
 
 fun main() {
-
-
     val habitantes: Int
     val consumoAguaHabitanteDia = 160 //Dado estimado hardcoded
     habitantes = 70000
 
-
     val vasaoLitrosPorDia = habitantes * consumoAguaHabitanteDia
-    val vasaoLitrosPorSegundo = vasaoLitrosPorDia/86400
+    val vasaoLitrosPorSegundo = vasaoLitrosPorDia/86400.0
 
-    val alturaDaAgua =  calcularAlturaDaAgua(vasaoLitrosPorSegundo/1000.toDouble(),"9")
-    println("RESPOSTA")
-    println(calcularRegraDeTres(alturaDaAgua*100,"9"))
+    for(polegada in listaPolegadasCurta) {
+        //TODO: Ta fora de ordem, MAS ATENCAO: pra mudar a ordem de uma das listas constantes tem que mudar de todas.
+        println("para a cm: ${colunaW_CM.get(polegada)}, a vazão é de ${calcularCalhaDeParshall(vasaoLitrosPorSegundo,polegada)}%")
+    }
+
 
 }
 
+fun calcularCalhaDeParshall(vasaoLitrosPorSegundo: Double,polegada: String): Int{
+    val vasaoLitrosCubicosPorSegundo = vasaoLitrosPorSegundo / 1000
+    val alturaDaAgua =  calcularAlturaDaAgua(vasaoLitrosCubicosPorSegundo,polegada)
+    return calcularRegraDeTres(alturaDaAgua*100,polegada).toInt()
+}
 
 fun calcularAlturaDaAgua(vasaoPorSegunda:Double,polegada:String):Double{
     //Essa funcao VAI colapsar se por algum motivo alguem inserir um valor nullo na tabela
