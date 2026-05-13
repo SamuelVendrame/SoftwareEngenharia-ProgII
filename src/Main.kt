@@ -1,7 +1,7 @@
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.pow
 
-//Na moral, QUEM inventou de colocar aspas em polegada??????
+//Na moral, QUEM inventou de colocar aspas em polegada?????
 val listaPolegadasLonga = listOf("1\"","3\"","6\"","9\"","1\'","1,50\'","2\'","3\'","4\'","5\'","6\'","7\'","8\'","10\'")
 val listaPolegadasCurta = listOf("3\"","6\"","9\"","1\'","1,50\'","2\'","3\'","4\'","5\'")
 val listaColunaW_CM = listOf<Double>(2.5,7.6,15.2,22.9,30.5,45.7,61.0,91.5,122.0,152.5,183.0,213.5,244.0,305.0)
