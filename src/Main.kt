@@ -1,4 +1,4 @@
-import kotlin.coroutines.CoroutineContext
+import kotlin.collections.mutableListOf
 import kotlin.math.pow
 
 //Na moral, QUEM inventou de colocar aspas em polegada??????
@@ -20,52 +20,60 @@ val colunaN: Map<String,Double> = listaPolegadasCurta.zip(listaColunaN).toMap<St
 
 fun main() {
     val habitantes: Int
-    val consumoAguaHabitanteDia = 150 //Dado estimado hardcoded
-    habitantes = 90000
+    val consumoAguaHabitanteDia = 170 //Dado estimado hardcoded
+    habitantes = 100000
 
     val vasaoLitrosPorDia = habitantes * consumoAguaHabitanteDia
     val vasaoLitrosPorSegundo = vasaoLitrosPorDia/86400.0
 
+    printarValores(filtrarValoresDePorcentagem(calcularTodosOsValoresPossiveis(vasaoLitrosPorSegundo)))
+}
+
+
+fun calcularTodosOsValoresPossiveis(vasaoLitrosPorSegundo: Double): MutableList<Pair<String,Int>> {
     val listaCalculado = mutableListOf<Pair<String,Int>>()
     for(polegada in listaPolegadasCurta ){
         listaCalculado.add(Pair(polegada,calcularCalhaDeParshall(vasaoLitrosPorSegundo,polegada)))
     }
+    return listaCalculado
+}
 
-    val valoresProximos = mutableListOf<Pair<String,Int>>()
-    for(index in listaCalculado.indices){
-        if(listaCalculado[index].second < 70){
-            if(index == listaCalculado.size - 1){
-                valoresProximos.add(listaCalculado[index-2])
-            }
-            if(index != 0) {
-                valoresProximos.add(listaCalculado[index - 1])
-            }
-            valoresProximos.add(listaCalculado[index])
-            if(index != listaCalculado.size - 1) {
-                valoresProximos.add(listaCalculado[index + 1])
-            }
-            if(index == 0){
-                valoresProximos.add(listaCalculado[index+2])
-            }
-            break
-        }
-    }
-
-    for(item in valoresProximos){
+fun printarValores(valores: MutableList<Pair<String,Int>>){
+    for(item in valores){
         if(item.second < 70) {
             println("\u001B[34m${item.first}\u001B[0m para a cm: \u001B[34m${colunaW_CM.get(item.first)}\u001B[0m, a vazão é de \u001B[32m${item.second}%\u001B[0m")
         }else{
             println("\u001B[34m${item.first}\u001B[0m para a cm: \u001B[34m${colunaW_CM.get(item.first)}\u001B[0m, a vazão é de \u001B[31m${item.second}%\u001B[0m")
         }
-
     }
-    if(valoresProximos.isEmpty()){
-        println("NAO FOI POSSIVEL CALCULAR NENHUM VALOR ABAIXO DE 70%")
-        for(item in listaCalculado){
-            println("${item.first} para a cm: ${colunaW_CM.get(item.first)}, a vazão é de ${item.second}%")
+}
+fun filtrarValoresDePorcentagem(valores: MutableList<Pair<String,Int>>): MutableList<Pair<String,Int>>{
+    val valoresProximos = mutableListOf<Pair<String,Int>>()
+    for(index in valores.indices){
+        if(valores[index].second < 70){
+            if(index == valores.size - 1){
+                valoresProximos.add(valores[index-2])
+            }
+            if(index != 0) {
+                valoresProximos.add(valores[index - 1])
+            }
+            valoresProximos.add(valores[index])
+            if(index != valores.size - 1) {
+                valoresProximos.add(valores[index + 1])
+            }
+            if(index == 0){
+                valoresProximos.add(valores[index+2])
+            }
+            break
         }
     }
-
+    if(valoresProximos.isEmpty()){
+        //Devolve os tres ultimos items
+        valoresProximos.add(valores[valores.size - 3])
+        valoresProximos.add(valores[valores.size - 2])
+        valoresProximos.add(valores[valores.size - 1])
+    }
+    return valoresProximos
 }
 
 fun calcularCalhaDeParshall(vasaoLitrosPorSegundo: Double,polegada: String): Int{
