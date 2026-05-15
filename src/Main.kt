@@ -1,6 +1,6 @@
 import kotlin.collections.mutableListOf
 import kotlin.math.pow
-
+import java.util.Scanner
 //Na moral, QUEM inventou de colocar aspas em polegada??????
 val listaPolegadasLonga = listOf("1\"","3\"","6\"","9\"","1\'","1,50\'","2\'","3\'","4\'","5\'","6\'","7\'","8\'","10\'")
 val listaPolegadasCurta = listOf("3\"","6\"","9\"","1\'","1,50\'","2\'","3\'","4\'","5\'")
@@ -20,8 +20,15 @@ val colunaN: Map<String,Double> = listaPolegadasCurta.zip(listaColunaN).toMap<St
 
 fun main() {
     val habitantes: Int
-    val consumoAguaHabitanteDia = 170 //Dado estimado hardcoded
-    habitantes = 100000
+    val consumoAguaHabitanteDia: Int //Dado estimado hardcoded
+
+    val scanner = Scanner(System.`in`)
+
+    println("Digite á quantidade de habitantes:")
+    habitantes = scanner.nextInt()
+
+    println("Digite á quantidade de consumo de agua por habitantes dias")
+    consumoAguaHabitanteDia = scanner.nextInt()
 
     val vasaoLitrosPorDia = habitantes * consumoAguaHabitanteDia
     val vasaoLitrosPorSegundo = vasaoLitrosPorDia/86400.0
